@@ -1,15 +1,13 @@
-from flask import Flask
+from flask import Flask, render_template
 
-# Создаём экземпляр приложения Flask
+# Приложение Flask
 app = Flask(__name__)
 
 
-# Маршрут для главной страницы
 @app.route('/')
 def home():
-    return '<h1>Welcome to AutoService Booking</h1>'
+    return render_template('index.html')
 
 
-# Запуск приложения
 if __name__ == '__main__':
     app.run(debug=True)
