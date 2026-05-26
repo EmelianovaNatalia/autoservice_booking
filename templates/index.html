@@ -1,11 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutoService Booking</title>
+    <title>Автосервис самообслуживания</title>
 </head>
 <body>
-    <h1>Welcome to AutoService Booking</h1>
-    <p>Online booking system for self-service car repair garages.
+
+    <h1>Бронирование бокса</h1>
+
+    <form action="/book" method="POST">
+
+        <label>Имя:</label><br>
+        <input type="text" name="name" required><br><br>
+
+        <label>Телефон:</label><br>
+        <input type="text" name="phone" required><br><br>
+
+        <label>Выбор бокса:</label><br>
+        <select name="box" required>
+            <option value="Бокс 1">Бокс 1</option>
+            <option value="Бокс 2">Бокс 2</option>
+            <option value="Бокс 3">Бокс 3</option>
+        </select><br><br>
+
+        <label>Дата:</label><br>
+        <input type="date" name="date" required><br><br>
+
+        <label>Время:</label><br>
+        <input type="time" name="time" required><br><br>
+
+        <button type="submit">Забронировать</button>
+
+    </form>
+
+</body>
 </html>
