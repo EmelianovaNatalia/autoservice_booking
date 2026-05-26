@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
+from collections import defaultdict
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey123"
@@ -92,6 +93,20 @@ def delete_booking(booking_id):
         db.session.commit()
 
     return redirect('/admin')
+
+@app.route('/calendar')
+def calendar():
+    if not session.get('logged_in'):
+        return redirect('/login')
+
+    bookings = Booking.query.all()
+
+    calendar_data = defaultdict(list)
+
+    for b in bookings:
+        calendar_data[b.date].append(b)
+
+    return render_template('calendar.html', calendar=calendar_data)
 
 if __name__ == '__main__':
     app.run(debug=True)
