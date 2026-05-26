@@ -23,6 +23,12 @@
 ## Запуск
 
 ```bash
+## Данные администратора
+
+Логин: admin
+
+Пароль: admin
+
 pip install -r requirements.txt
 python app.py
 ```
