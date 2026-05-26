@@ -1,16 +1,14 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.secret_key = "supersecretkey123"
 
-# Подключение базы данных (пока SQLite для простоты)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///autoservice.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-
-# Модель бронирования
 class Booking(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -25,8 +23,6 @@ class Booking(db.Model):
 def home():
     return render_template('index.html')
 
-
-# Обработка бронирования
 @app.route('/book', methods=['POST'])
 def book():
     name = request.form['name']
@@ -50,11 +46,30 @@ def book():
 
 @app.route('/admin')
 def admin():
+    if not session.get('logged_in'):
+        return redirect('/login')
+
     bookings = Booking.query.all()
     return render_template('admin.html', bookings=bookings)
+    
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        if username == "admin" and password == "admin":
+            session['logged_in'] = True
+            return redirect('/admin')
+
+        return "Неверный логин или пароль"
+
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    return redirect('/')
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()  # создаёт таблицы при первом запуске
-
     app.run(debug=True)
