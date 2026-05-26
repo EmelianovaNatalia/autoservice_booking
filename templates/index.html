@@ -18,7 +18,7 @@
 
     <div class="card shadow-sm p-4 mx-auto" style="max-width: 500px;">
 
-        <form action="/book" method="POST">
+        <form action="/book" method="POST" onsubmit="return validateForm()">
 
             <div class="mb-3">
                 <label class="form-label">Имя</label>
@@ -60,5 +60,19 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+<script>
+    function validateForm() {
+        const phone = document.querySelector('input[name="phone"]').value;
+    
+        if (phone.length < 10) {
+            alert("Введите корректный номер телефона");
+            return false;
+        }
+    
+        return true;
+    }
+    </script>
+
+    
 </body>
 </html>
