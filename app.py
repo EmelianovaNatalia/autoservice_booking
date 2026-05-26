@@ -31,6 +31,15 @@ def book():
     date = request.form['date']
     time = request.form['time']
 
+    existing_booking = Booking.query.filter_by(
+        box=box,
+        date=date,
+        time=time
+    ).first()
+
+    if existing_booking:
+        return "Этот бокс уже занят на выбранное время. Пожалуйста, выберите другое время."
+
     new_booking = Booking(
         name=name,
         phone=phone,
@@ -70,6 +79,19 @@ def login():
 def logout():
     session.pop('logged_in', None)
     return redirect('/')
+
+@app.route('/delete/<int:booking_id>')
+def delete_booking(booking_id):
+    if not session.get('logged_in'):
+        return redirect('/login')
+
+    booking = Booking.query.get(booking_id)
+
+    if booking:
+        db.session.delete(booking)
+        db.session.commit()
+
+    return redirect('/admin')
 
 if __name__ == '__main__':
     app.run(debug=True)
